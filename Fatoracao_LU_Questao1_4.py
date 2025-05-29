@@ -1,15 +1,8 @@
-#------------------------------------ AUXILIARES ------------------------------------
-#Exibição de matriz qualquer (6 casas decimais):
-def exibir_matriz(matriz, nome):
-    print("\nA Matriz", nome, "é:")
-    for linha in matriz:
-        print("[", end=" ")
-        for valor in linha:
-            if abs(valor) < 1e-10:
-                valor = 0.0
-            print("{:.6f}".format(valor), end=" ")
-        print("]")
+import numpy as np
+from scipy.io import mmread
+import random
 
+#------------------------------------------- AUXILIARES --------------------------------------------
 #Exibição de um vetor qualquer (6 casas decimais):
 def exibir_vetor(vetor, nome):
     print("\nO vetor", nome, "é:")
@@ -18,44 +11,36 @@ def exibir_vetor(vetor, nome):
             valor = 0.0
         print("[ {:.6f} ]".format(valor))
 
+#--------------------------------------------- MATRIZ A --------------------------------------------
+#Leitura da matriz A através dos arquivos do Matrix Market - considerar A como esparsa
+A = np.array(mmread('bcsstk22.mtx').todense())
+#A = np.array(mmread('bcsstk23.mtx').todense())
+#A = np.array(mmread('bcsstk24.mtx').todense())
+print("\nMatriz A lida.")
 
-#-------------------------------------- MATRIZ A --------------------------------------
+#--------------------------------------------- VETOR B ---------------------------------------------
 
-print("\n------------------------------ ENTRADA DE DADOS ----------------------------------")
-#"n" é o inteiro que representa a ordem da matriz A
-n = int (input("\nDigite a ordem da matriz A: "))
-#Matriz A iniciada como vazia
-A = []
+#Criação do vetor B com valores aleatórios de 1 a 50:
+B = np.random.randint(1, 51, size=A.shape[0])
+print("\nVetor B criado.")
 
-#Leitura da matriz A
-print("\nDigite os valores da matriz A, um por um: ")
-for i in range(n):
-    linha = []
-    for j in range(n):
-        valorA = float(input("Elemento [{}][{}]: ".format(i, j)))
-        linha.append(valorA)
-    A.append(linha)
+#Salvando o vetor B num txt:
+#Caso arquivo bcsstk22.mtx usado:
+np.savetxt('vetorB_22.txt', B, fmt='%.6f')
 
-# Exibição da matriz A
-exibir_matriz(A, "A")
+#Caso arquivo bcsstk23.mtx usado:
+#np.savetxt('vetorB_23.txt', B, fmt='%.6f')
 
-#-------------------------------------- VETOR B --------------------------------------
-#Inicialização do Vetor B:
-B = []
+#Caso arquivo bcsstk24.mtx usado:
+#np.savetxt('vetorB_24.txt', B, fmt='%.6f')
+print("\nArquivo txt com valores do vetor B foi criado.")
 
-#Leitura do vetor B:
-print("\nDigite os valores do vetor B, um por um: ")
-for i in range(n):
-    valorB = float(input("Elemento [{}]: ".format(i)))
-    B.append(valorB)
-    
-# Exibição do vetor B:
-exibir_vetor(B, "B")
-
-
-#--------------------------- MONTANDO A MATRIZ A FATORADA ----------------------------
+#-------------------------------------- FATORAÇÃO DA MATRIZ A --------------------------------------
 
 print("\n----------------------- MONTANDO A MATRIZ A FATORADA ---------------------------")
+
+#Ordem da matriz A:
+n = A.shape[0]
 
 L = []
 for i in range(n):
@@ -69,14 +54,10 @@ for i in range(n):
 
 #A quantidade de etapas da fatoração será n-1:
 etapas = n - 1
-if(etapas > 1):
-    print("\nTeremos", etapas, "etapas.")
-else:
-    print("\nTeremos", etapas, "etapa.")
 
 #Cálculo por etapas:
 for k in range(etapas):
-    print("\nEtapa:", k+1)
+    contador = k+1
 
     #Definição do pivô:
     pivo = A[k][k]
@@ -84,27 +65,18 @@ for k in range(etapas):
     for i in range (n):
         if (i > k):
             #Definição do multiplicador de cada linha abaixo do pivô:
-            multiplicador = A[i][k] / pivo #Dúvida: e se pivô for zero???
+            multiplicador = A[i][k] / pivo #DÚVIDA: se o pivô for zero?
 
             #Armazenando os multiplicadores na matriz L:
             L[i][k] = multiplicador
+
             #Atualização da linha i:
             for count in range (n):
                 A[i][count] = A[i][count] - multiplicador * A[k][count]
-            #Desmarcar as duas linhas abaixo para teste:
-            #print("\nA matriz A com linha", i+1, "atualizada será:")
-            #exibir_matriz(A, "A")
+           
 
-
-    #Exibição da Matriz A fatorada na etapa k:
-    print("\nA matriz A fatorada na etapa", k+1, "será:")
-    exibir_matriz(A, "A")
-
-print("\n---------------------- ENCONTRANDO AS MATRIZES 'U' E 'L' --------------------------")
-
-#Exibir L e U:
-exibir_matriz(L,"L")
-exibir_matriz(A, "U")
+print("\nMatriz A foi fatorada em", contador, "etapas.")
+print("\nMatrizes L e U criadas.")
 
 #------------------------------
 # Matriz U: A matriz U será igual à matriz A atualizada. 
@@ -132,9 +104,6 @@ for i in range (1, n):
         Y[i] = Y[i] - L[i][j]*Y[j]
   
     contador = contador + 1
-
-#Exibição do vetor Y calculado:
-exibir_vetor(Y,"Y")
 
 #------------------------------- CÁLCULO DE X, A PARTIR DE U*X = Y -----------------------------
 
