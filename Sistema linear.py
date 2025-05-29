@@ -61,13 +61,13 @@ def gauss_eliminacao(A, b):
     print(f"Posto(A) = {rank_A}, Posto([A|b]) = {rank_Ab}")
 
     if rank_A < rank_Ab:
-        print("❌ Sistema sem solução. Encerrando o programa.")
+        print("Sistema sem solução. Encerrando o programa.")
         return None
     elif rank_A == rank_Ab and rank_A < n:
-        print("⚠️ Sistema com infinitas soluções. Encerrando o programa.")
+        print("Sistema com infinitas soluções. Encerrando o programa.")
         return None
     else:
-        print("✅ Sistema pode ter solução única. Continuando...")
+        print("Sistema pode ter solução única. Continuando...")
 
     # Eliminação de Gauss com pivotamento parcial
     for i in range(n):
