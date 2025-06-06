@@ -320,5 +320,10 @@ else:
     residuo = calcula_residuo(A_copia, B, X)
     exibe_residuo(residuo)
 
+    # Calcula o maior valor em módulo
+    maior_residuo = np.max(np.abs(residuo))
+
+    print(f"\nO maior resíduo é: {maior_residuo:.6f}")
+
 fim = time.time()
 print(f"\nTempo de execução: {fim - inicio:.6f} segundos")
