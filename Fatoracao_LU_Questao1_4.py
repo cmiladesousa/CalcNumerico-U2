@@ -1,22 +1,9 @@
 import numpy as np
 from scipy.io import mmread
 import random
+import time
+
 ################################################## AUXILIARES ##################################################
-def exibir_vetor(vetor, nome):
-    """
-    Esta função exibe os dados de um vetor qualquer com 6 casas decimais de precisão.
-
-    :param vetor: um vetor qualquer
-    :type vetor:  ndarray
-    :param nome: nome do vetor  
-    :type nome: str
-    """
-    print("\nO vetor", nome, "é:")
-    for valor in vetor:
-        if abs(valor) < 1e-10:
-            valor = 0.0
-        print("[ {:.6f} ]".format(valor))
-
 def criar_matrizIdentidade(tamanho):
     """
     Esta função cria uma matriz identidade usada para criar a matriz L da fatoração LU. Retorna uma matriz criada.
@@ -29,7 +16,6 @@ def criar_matrizIdentidade(tamanho):
     for i in range(tamanho):
         matriz[i, i] = 1
     return matriz
-
 
 def pivotamento_parcial(k, pivo, posicao_pivo, P, A, L, n):
     """
@@ -53,6 +39,7 @@ def pivotamento_parcial(k, pivo, posicao_pivo, P, A, L, n):
     """
     #Procurando a maior entrada da coluna k
     for i in range(k+1,n):
+        
         if(abs(A[i][k]) > abs(pivo)):
             pivo = A[i][k]
             posicao_pivo = i
@@ -95,6 +82,7 @@ def fatoracao(n, A, etapas, L, P):
     """
     #Cálculo por etapas:
     for k in range(etapas):
+        print(f"\nEtapa {k}")
         #Definição inicial do pivô:
         pivo = A[k][k]
         posicao_pivo = k
@@ -114,7 +102,6 @@ def fatoracao(n, A, etapas, L, P):
                 #Atualização da linha i:
                 for count in range (n):
                     A[i][count] = A[i][count] - multiplicador * A[k][count]
-
 def calculoY(B_permutado, L, n): 
     """
     Esta função calcula o vetor Y. Retorna o vetor calculado.
@@ -171,24 +158,12 @@ def calcula_residuo(A_copia, B, X):
     residuo = np.dot(A_copia, X) - B
     return residuo
 
-def exibe_residuo(residuo):
-    """
-    Esta função os dados do vetor resíduo.
-
-    :param residuo: vetor resíduo.
-    :type residuo: numpy.ndarray
-    """ 
-    print("\nResíduo (Ax - B):")
-    for valor in residuo:
-        if abs(valor) < 1e-10:
-            valor = 0.0
-        print("[ {:.6f} ]".format(valor))
 ##########################################################################################################################
 ################################################## MATRIZ A ##################################################
-
+inicio = time.time()
 print("\n------------------------------ ENTRADA DE DADOS ----------------------------------")
 
-#Leitura da matriz A através dos arquivos do Matrix Market - considerando A como esparsa
+#Leitura da matriz A através dos arquivos do Matrix Market
 A = np.array(mmread('bcsstk22.mtx').todense())
 #A = np.array(mmread('bcsstk23.mtx').todense())
 #A = np.array(mmread('bcsstk24.mtx').todense())
@@ -200,21 +175,20 @@ A_copia = A.copy()
 ################################################## VETOR B ##################################################
 #Criação do vetor B com valores aleatórios de 1 a 50:
 B = np.random.randint(1, 51, size=A.shape[0])
-print("\nVetor B criado.")
 
 #Salvando o vetor B num txt:
 #Caso arquivo bcsstk22.mtx usado:
-np.savetxt('vetorB_22.txt', B, fmt='%.6f')
+np.savetxt('LU_vetorB_22.txt', B, fmt='%.6f')
 
 #Caso arquivo bcsstk23.mtx usado:
-#np.savetxt('vetorB_23.txt', B, fmt='%.6f')
+#np.savetxt('LU_vetorB_23.txt', B, fmt='%.6f')
 
 #Caso arquivo bcsstk24.mtx usado:
-#np.savetxt('vetorB_24.txt', B, fmt='%.6f')
+#np.savetxt('LU_vetorB_24.txt', B, fmt='%.6f')
 print("\nArquivo txt com valores do vetor B foi criado.")
 
 ##################################### MONTANDO A MATRIZ A FATORADA ##########################################
-print("\n----------------------- MONTANDO A MATRIZ A FATORADA ---------------------------")
+print("\n----------------------- PROCESSANDO A FATORAÇÃO LU... ---------------------------")
 
 #Ordem da matriz A:
 n = A.shape[0]
@@ -237,8 +211,7 @@ fatoracao(n, A, etapas, L, P)
 # Cópia da matriz A fatorada para U:
 U = A.copy()
 
-print("\nMatriz A foi fatorada em", etapas, "etapas.")
-print("\nMatrizes L e U criadas.")
+print("\nEtapas:", etapas)
 
 ###################################### CÁLCULO DE Y, A PARTIR DE L*Y = B #######################################
 
@@ -249,14 +222,36 @@ B_permutado = B[P]
 Y = calculoY(B_permutado,L, n)
 
 ###################################### CÁLCULO DE X, A PARTIR DE U*X = Y ######################################
-print("\n-------------------------------- CALCULANDO X ------------------------------------")
-
 #Criação do Vetor X:
 X = calculoX(Y,U, n)
 
-#Exibição do vetor X calculado:
-exibir_vetor(X,"X")
+#Salvando o resultado do vetor X calculado num txt:
+#Caso arquivo bcsstk22.mtx usado:
+np.savetxt('LU_solucao_aproximada22.txt', X, fmt='%.6f')
 
+#Caso arquivo bcsstk23.mtx usado:
+#np.savetxt('LU_solucao_aproximada23.txt', X, fmt='%.6f')
+
+#Caso arquivo bcsstk24.mtx usado:
+#np.savetxt('LU_solucao_aproximada24.txt', B, fmt='%.6f')
+
+print("\nArquivo com as soluções X criado")
+
+###################################### CÁLCULO DO RESÍDUO ######################################
 #Checando o resíduo:
 residuo = calcula_residuo(A_copia, B, X)
-exibe_residuo(residuo)
+
+#Salvando o resultado do vetor resíduo calculado num txt:
+#Caso arquivo bcsstk22.mtx usado:
+np.savetxt('LU_vetor_residuo22.txt', X, fmt='%.6f')
+
+#Caso arquivo bcsstk23.mtx usado:
+#np.savetxt('LU_vetor_residuo23.txt', X, fmt='%.6f')
+
+#Caso arquivo bcsstk24.mtx usado:
+#np.savetxt('LU_vetor_residuo24.txt', B, fmt='%.6f')
+
+print("\nArquivo com o vetor resíduo criado")
+
+fim = time.time()
+print(f"\nTempo de execução: {fim - inicio:.6f} segundos")

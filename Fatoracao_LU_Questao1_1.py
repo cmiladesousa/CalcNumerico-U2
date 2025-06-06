@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 ################################################## AUXILIARES ##################################################
 def exibir_matriz(matriz, nome):
@@ -245,7 +246,7 @@ def exibe_residuo(residuo):
         print("[ {:.6f} ]".format(valor))
 ##########################################################################################################################
 ################################################## MATRIZ A ##################################################
-
+inicio = time.time()
 print("\n------------------------------ ENTRADA DE DADOS ----------------------------------")
 
 n = int (input("\nDigite a ordem da matriz A: ")) #n é a ordem da matriz A
@@ -261,9 +262,9 @@ A_copia = A.copy()
 #Só prossegue se determinante não for zero:
 determinante = calcula_determinante(A)
 if np.isclose(determinante, 0):
-    print("\nInfelizmente, a matriz é singular (não possui inversa). Logo, o algoritmo será encerrado.")
+    print("\nA matriz é singular (não possui inversa), ou seja, seu determinante é zero e, por isso, a fatoração LU não pôde continuar. Logo, o sistema linear ou não possui soluções ou possui infinitas soluções. Portanto, o algoritmo será encerrado.")
 else:
-    print("\nComo o determinante da matriz A é diferente de zero, podemos prosseguir com a fatoração LU!")
+    print("\nComo o determinante da matriz A é diferente de zero, o sistema linear possui uma única solução. Assim, podemos prosseguir com a fatoração LU!")
 
     ################################################## VETOR B ##################################################
     #Leitura e exibição do vetor B:
@@ -272,7 +273,7 @@ else:
     exibir_vetor(B, "B")
 
     ##################################### MONTANDO A MATRIZ A FATORADA ##########################################
-    print("\n----------------------- MONTANDO A MATRIZ A FATORADA ---------------------------")
+    print("\n----------------------- PROCESSANDO A FATORAÇÃO LU... ---------------------------")
 
     #Criação da matriz L:
     L = criar_matrizIdentidade(n)
@@ -285,15 +286,10 @@ else:
 
     #A quantidade de etapas da fatoração será n-1:
     etapas = n - 1
-    if(etapas > 1):
-        print("\nTeremos", etapas, "etapas.")
-    else:
-        print("\nTeremos", etapas, "etapa.")
-
+    print("\nTeremos", etapas, "etapa(s).")
+   
     #Fatoração:
     fatoracao(n, A, etapas, L, P)
-
-    print("\n---------------------- ENCONTRANDO AS MATRIZES 'U' E 'L' --------------------------")
 
     # Cópia da matriz A fatorada para U:
     U = A.copy()
@@ -303,8 +299,6 @@ else:
     exibir_matriz(U, "U")
 
     ###################################### CÁLCULO DE Y, A PARTIR DE L*Y = B #######################################
-    print ("\n-------------------------------- CALCULANDO Y ------------------------------------")
-
     #Permutar B caso as linhas de A tenham sido permutadas:
     B_permutado = B[P]
 
@@ -315,14 +309,16 @@ else:
     exibir_vetor(Y,"Y")
 
     ###################################### CÁLCULO DE X, A PARTIR DE U*X = Y ######################################
-    print("\n-------------------------------- CALCULANDO X ------------------------------------")
-
     #Criação do Vetor X:
     X = calculoX(Y,U, n)
 
     #Exibição do vetor X calculado:
     exibir_vetor(X,"X")
 
+    ###################################### CÁLCULO DO RESÍDUO ######################################
     #Checando o resíduo:
     residuo = calcula_residuo(A_copia, B, X)
     exibe_residuo(residuo)
+
+fim = time.time()
+print(f"\nTempo de execução: {fim - inicio:.6f} segundos")
