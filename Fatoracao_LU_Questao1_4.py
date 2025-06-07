@@ -82,7 +82,7 @@ def fatoracao(n, A, etapas, L, P):
     """
     #Cálculo por etapas:
     for k in range(etapas):
-        print(f"\nEtapa {k}")
+        #print(f"\nEtapa {k}")
         #Definição inicial do pivô:
         pivo = A[k][k]
         posicao_pivo = k
@@ -164,9 +164,9 @@ inicio = time.time()
 print("\n------------------------------ ENTRADA DE DADOS ----------------------------------")
 
 #Leitura da matriz A através dos arquivos do Matrix Market
-A = np.array(mmread('bcsstk22.mtx').todense())
+#A = np.array(mmread('bcsstk22.mtx').todense())
 #A = np.array(mmread('bcsstk23.mtx').todense())
-#A = np.array(mmread('bcsstk24.mtx').todense())
+A = np.array(mmread('bcsstk24.mtx').todense())
 print("\nMatriz A lida.")
 
 #Criação da matriz cópia de A:
@@ -178,13 +178,13 @@ B = np.random.randint(1, 51, size=A.shape[0])
 
 #Salvando o vetor B num txt:
 #Caso arquivo bcsstk22.mtx usado:
-np.savetxt('LU_vetorB_22.txt', B, fmt='%.6f')
+#np.savetxt('LU_vetorB_22.txt', B, fmt='%.6f')
 
 #Caso arquivo bcsstk23.mtx usado:
 #np.savetxt('LU_vetorB_23.txt', B, fmt='%.6f')
 
 #Caso arquivo bcsstk24.mtx usado:
-#np.savetxt('LU_vetorB_24.txt', B, fmt='%.6f')
+np.savetxt('LU_vetorB_24.txt', B, fmt='%.6f')
 print("\nArquivo txt com valores do vetor B foi criado.")
 
 ##################################### MONTANDO A MATRIZ A FATORADA ##########################################
@@ -211,7 +211,7 @@ fatoracao(n, A, etapas, L, P)
 # Cópia da matriz A fatorada para U:
 U = A.copy()
 
-print("\nEtapas:", etapas)
+#print("\nEtapas:", etapas)
 
 ###################################### CÁLCULO DE Y, A PARTIR DE L*Y = B #######################################
 
@@ -227,13 +227,13 @@ X = calculoX(Y,U, n)
 
 #Salvando o resultado do vetor X calculado num txt:
 #Caso arquivo bcsstk22.mtx usado:
-np.savetxt('LU_solucao_aproximada22.txt', X, fmt='%.6f')
+#np.savetxt('LU_solucao_aproximada22.txt', X, fmt='%.6f')
 
 #Caso arquivo bcsstk23.mtx usado:
 #np.savetxt('LU_solucao_aproximada23.txt', X, fmt='%.6f')
 
 #Caso arquivo bcsstk24.mtx usado:
-#np.savetxt('LU_solucao_aproximada24.txt', B, fmt='%.6f')
+np.savetxt('LU_solucao_aproximada24.txt', B, fmt='%.6f')
 
 print("\nArquivo com as soluções X criado")
 
@@ -243,20 +243,20 @@ residuo = calcula_residuo(A_copia, B, X)
 
 #Salvando o resultado do vetor resíduo calculado num txt:
 #Caso arquivo bcsstk22.mtx usado:
-np.savetxt('LU_vetor_residuo22.txt', X, fmt='%.6f')
+#np.savetxt('LU_vetor_residuo22.txt', X, fmt='%.6f')
 
 #Caso arquivo bcsstk23.mtx usado:
 #np.savetxt('LU_vetor_residuo23.txt', X, fmt='%.6f')
 
 #Caso arquivo bcsstk24.mtx usado:
-#np.savetxt('LU_vetor_residuo24.txt', B, fmt='%.6f')
+np.savetxt('LU_vetor_residuo24.txt', B, fmt='%.6f')
 
 print("\nArquivo com o vetor resíduo criado")
 
 # Lê os dados do arquivo
-R_lido = np.loadtxt('LU_vetor_residuo22.txt')
+#R_lido = np.loadtxt('LU_vetor_residuo22.txt')
 #R_lido = np.loadtxt('LU_vetor_residuo23.txt')
-#R_lido = np.loadtxt('LU_vetor_residuo24.txt')
+R_lido = np.loadtxt('LU_vetor_residuo24.txt')
 
 # Calcula o maior valor em módulo
 maior_residuo = np.max(np.abs(R_lido))
