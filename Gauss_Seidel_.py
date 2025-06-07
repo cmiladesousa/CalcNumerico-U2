@@ -1,9 +1,26 @@
-# Ordem da matriz A de entrada:
+import time
+#Função que calcula se uma matriz é diagonalmente dominante:
+def eh_diagonalmente_dominante(A):
+    """
+    Esta função verifica se a matriz A é diagonalmente dominante. Retorna true caso seja, e false caso contrário.
 
-n = int(input('Qual a ordem da matriz?'))
+    :param A: Matriz A
+    :type A: list
+    :return: boolean
+    """
+    n = len(A)
+    for i in range(n):
+        soma = sum(abs(A[i][j]) for j in range(n) if j != i)
+        if abs(A[i][i]) < soma:
+            return False
+    return True
+
+inicio = time.time()
+
+# Ordem da matriz A de entrada:
+n = int(input('\nQual a ordem da matriz?'))
 
 # Declaração das matrizes A, B, X, Y e C:
-
 A = [[0.0 for _ in range(n)] for _ in range(n)]
 B = [0.0 for _ in range(n)]
 X = [0.0 for _ in range(n)]
@@ -12,41 +29,28 @@ C = [0.0 for _ in range(n)] # Valores da distância Absoluta
 R = [0.0 for _ in range(n)] # Para cálculo do vetor resíduo
 
 # Laços para leitura de entrada de A e B:
-
 for i in range (n):
     for j in range (n):
         A[i][j] = float(input(f'Elemento A[{i}][{j}]: '))
 for i in range (n):
     B[i] = float(input(f'Elemento B[{i}]: '))
 
-# Cálculo dos valores de X iniciais:
-
-for i in range (n):
-    X[i] = B[i] / A[i][i]
-
-# Declaração das variáveis de dA e dR, com valores iniciais acima do critério de parada:
-
-maiorAbs = 10
-maiorRel = 10
-cont = 0 # Contador para auxiliar na definição de diagonalmente dominante
-
-# Laço para verificar se é diagonalmente dominante:
-
-for i in range (n):
-    somalinha = 0
-    somacoluna = 0
-    for j in range (n):
-        if i != j:
-            somalinha = somalinha + A[i][j]
-            somacoluna = somacoluna + A[j][i]
-            if A[i][i] > somalinha or A[i][i] > somacoluna:
-                cont = cont + 1
-
 # Sendo diagonalmente dominante, faz os cálculos dos X's, dA e dR conforme método:
+if not eh_diagonalmente_dominante(A):
+    print("\nA matriz não é diagonalmente dominante. O método pode não convergir ou falhar.")
+else:
+    # Cálculo dos valores de X iniciais:
+    for i in range (n):
+        X[i] = B[i] / A[i][i]
 
-if cont >= n:
-    while maiorAbs > 10**-6 and maiorRel > 10**-6:
+    # Declaração das variáveis de dA e dR, com valores iniciais acima do critério de parada:
+    maiorAbs = 10
+    maiorRel = 10
+    iteracoes = 0
+
+    while maiorAbs > 5*10**-2 and maiorRel > 5*10**-2:
         for i in range (n):
+            iteracoes += 1
             soma = 0
             for j in range (n):
                 if i != j:
@@ -55,20 +59,24 @@ if cont >= n:
             X[i] = (B[i] - soma) / A[i][i]
             C[i] = X[i] - Y[i]
         maiorAbs = max(abs(numero) for numero in C)
-        maiorRel = maiorAbs/max(abs(numero) for numero in Y)  
-    print(X)
-    print(maiorAbs)
-    print(maiorRel)
+        maiorRel = maiorAbs/max(abs(numero) for numero in Y)
+    print("\nX =")   
+    for valor in X:
+        print("[ {:.2f} ]".format(valor))  
+    print(f"\n Maior absoluto = {maiorAbs:.2f}")
+    print(f"\n Maior rel = {maiorRel:.2f}")
+    print(f"\nIterações = {iteracoes}")
 
-# Vetor resíduo:
-
+    # Vetor resíduo:
     for i in range (n):
         somaresiduo = 0
         for j in range (n):
             somaresiduo = (A[i][j] * X[j]) + somaresiduo
         R[i] = B[i] - somaresiduo
-    print (R)
+    
+    print("\nResiduo =")
+    for valor in R:
+        print("[ {:.2f} ]".format(valor)) 
 
-# Mensagem caso não seja diagonalmente dominante:
-
-else: print('Não é diagonalmente dominante!')
+fim = time.time()
+print(f"\nTempo de execução: {fim - inicio:.2f} segundos")

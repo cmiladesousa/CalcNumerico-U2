@@ -254,12 +254,12 @@ np.savetxt('LU_vetor_residuo22.txt', X, fmt='%.6f')
 print("\nArquivo com o vetor resíduo criado")
 
 # Lê os dados do arquivo
-B_lido = np.loadtxt('LU_vetor_residuo22.txt')
-#B_lido = np.loadtxt('LU_vetor_residuo23.txt')
-#B_lido = np.loadtxt('LU_vetor_residuo24.txt')
+R_lido = np.loadtxt('LU_vetor_residuo22.txt')
+#R_lido = np.loadtxt('LU_vetor_residuo23.txt')
+#R_lido = np.loadtxt('LU_vetor_residuo24.txt')
 
 # Calcula o maior valor em módulo
-maior_residuo = np.max(np.abs(B_lido))
+maior_residuo = np.max(np.abs(R_lido))
 
 print(f"\nO maior resíduo é: {maior_residuo:.6f}")
 
