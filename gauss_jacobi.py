@@ -50,7 +50,7 @@ def gauss_jacobi(matriz, b, x, e):
         iteracoes += 1
     
     residuo(matriz, b, x)
-    #print(f"Valores de X: {x}")
+    print(f"Valores de X: {x}")
     print(f"Número de iterações: {iteracoes}")
 
 # Dados de entrada
@@ -89,42 +89,6 @@ matriz = np.array([
 b = np.array([7, -8, 6], dtype=float)
 x = np.array([0.7, -1.6, 0.6], dtype=float)
 
-#Questão 15 - letra a
-matriz15a = np.array([
-    [9, 5, 6],
-    [2, 3, 1],
-    [-1, 1, -3]
-], dtype=float)
-b15a = np.array([11, 4, -2], dtype=float)
-x15a = np.array([11/9, 4/3, -2/-3], dtype=float)
-
-#Questão 15 - letra b
-matriz15b = np.array([
-    [2, -1, 1],
-    [3, 3, 9],
-    [3, 3, 5]
-], dtype=float)
-b15b = np.array([-1, 0, 4], dtype=float)
-x15b = np.array([-0.5, 0, 4/5], dtype=float)
-
-#Questão 15 - letra c
-matriz15c = np.array([
-    [0.252, 0.36, 0.12],
-    [0.112, 0.16, 0.24],
-    [0.147, 0.21, 0.25]
-], dtype=float)
-b15c = np.array([7, 8, 9], dtype=float)
-x15c = np.array([7/0.252, 8/0.16, 9/0.25], dtype=float)
-
-#Questão 15 - letra d
-matriz15d = np.array([
-    [3, -2, 5, 1],
-    [-6, 4, -8, 1],
-    [9, -6, 19, 1],
-    [6, -4, -6, 15]
-], dtype=float)
-b15d = np.array([7, -9, 23, 11], dtype=float)
-x15d = np.array([7/3, -9/4, 23/19, 11/15], dtype=float)
 
 #Questão 16 - letra a
 matriz16a = np.array([
@@ -156,16 +120,6 @@ matriz16c = np.array([
 b16c = np.array([0.2, -2.6, 1, -2.5], dtype=float)
 x16c = np.array([0.2, -2.6, 1, -2.5], dtype=float)
 
-#Questão 17 
-matriz17 = np.array([
-    [1, 1, -1, 2, -1],
-    [2, 0, 0, 0, 0],
-    [0, 2, 0, 0, 0],
-    [4, 0, 0, 16, 0],
-    [0, 0, 4, 0, 0]
-], dtype=float)
-b17 = np.array([2, 2, 2, 20, 4], dtype=float)
-x17 = np.zeros_like(b17)
 
 #Questão 18
 matriz18 = np.array([
@@ -188,28 +142,21 @@ x19 = np.array([0, 2, 7/15, 5/15], dtype=float)
 
 e = 0.001
 
-#print("\n ----------- Questão 15 - Letra A -------------")
-#gauss_jacobi(matriz15a, b15a, x15a, e)
-#print("\n ----------- Questão 15 - Letra B -------------")
-#gauss_jacobi(matriz15b, b15b, x15b, e)
-#print("\n ----------- Questão 15 - Letra C -------------")
-#gauss_jacobi(matriz15c, b15c, x15c, e)
-#print("\n ----------- Questão 15 - Letra D -------------")
-#gauss_jacobi(matriz15d, b15d, x15d, e)
-#print("\n ----------- Questão 16 - Letra A -------------")
-#gauss_jacobi(matriz16a, b16a, x16a, e)
-#print("\n ----------- Questão 16 - Letra B -------------")
-#gauss_jacobi(matriz16b, b16b, x16b, e)
-#print("\n ----------- Questão 16 - Letra C -------------")
-#gauss_jacobi(matriz16c, b16c, x16c, e)
-#print("\n ----------- Questão 17 -------------")
-#gauss_jacobi(matriz17, b17, x17, e)
-#print("\n ----------- Questão 18 -------------")
-#gauss_jacobi(matriz18, b18, x18, e)
-#print("\n ----------- Questão 19 -------------")
-#gauss_jacobi(matriz19, b19, x19, e)
-#print("\n --------- Exemplo de Aula ------------------")
-#gauss_jacobi(matriz, b, x, e)
+print("\n ----------- Questão 16 - Letra A -------------")
+gauss_jacobi(matriz16a, b16a, x16a, e)
+print("\n ----------- Questão 16 - Letra B -------------")
+gauss_jacobi(matriz16b, b16b, x16b, e)
+print("\n ----------- Questão 16 - Letra C -------------")
+gauss_jacobi(matriz16c, b16c, x16c, e)
+print("\n ----------- Questão 18 -------------")
+gauss_jacobi(matriz18, b18, x18, e)
+print("\n ----------- Questão 19 -------------")
+gauss_jacobi(matriz19, b19, x19, e)
+print("\n --------- Exemplo de Aula ------------------")
+gauss_jacobi(matriz, b, x, e)
+print("\n --------- Matriz 1 ------------------")
 gauss_jacobi(matriz1, b1, x1, e)
+#print("\n --------- Matriz 2 ------------------")
 #gauss_jacobi(matriz2, b2, x2, e)
+#print("\n --------- Matriz 3 ------------------")
 #gauss_jacobi(matriz3, b3, x3, e)
