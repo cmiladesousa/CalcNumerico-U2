@@ -70,9 +70,9 @@ print("P(x) = 10: ", solucoes)
 print("\n Questão 24")
 x = sp.Symbol('x')
 polinomio = lagrange(x, vetorx24, vetory24)
-print("P(2008) = ", polinomio)
+print("P(x) = ", polinomio)
 
-print("P(7) = ", polinomio.subs(x, x24))
+print("P(2008) = ", polinomio.subs(x, x24))
 
 solucoes = sp.solve(polinomio - y24, x)
 print("P(x) = 350: ", solucoes)
